@@ -33,6 +33,18 @@ class ChatChain:
         model_type: ModelType = ModelType.GPT_3_5_TURBO,
     ) -> None:
         """
+        Initialize a ChatChain instance with configurations and task details.
+
+        Args:
+            config_path: Path to the ChatChainConfig.json.
+            config_phase_path: Path to the PhaseConfig.json.
+            config_role_path: Path to the RoleConfig.json.
+            task_prompt: The user input prompt for the software.
+            project_name: The user input name for the software.
+            org_name: The organization name of the human user.
+            model_type: The model type to be used, default is ModelType.GPT_3_5_TURBO.
+        """
+        """
 
         Args:
             config_path: path to the ChatChainConfig.json
@@ -113,6 +125,9 @@ class ChatChain:
 
     def make_recruitment(self):
         """
+        Recruit all employees as defined in the recruitments configuration.
+        """
+        """
         recruit all employees
         Returns: None
 
@@ -121,6 +136,15 @@ class ChatChain:
             self.chat_env.recruit(agent_name=employee)
 
     def execute_step(self, phase_item: dict):
+        """
+        Execute a single phase in the chain as defined by the phase_item configuration.
+
+        Args:
+            phase_item: A dictionary containing the configuration for a single phase in the ChatChainConfig.json.
+
+        Raises:
+            RuntimeError: If the phase type is not implemented.
+        """
         """
         execute single phase in the chain
         Args:
@@ -174,6 +198,9 @@ class ChatChain:
 
     def execute_chain(self):
         """
+        Execute the entire chain of phases based on the ChatChainConfig.json.
+        """
+        """
         execute the whole chain based on ChatChainConfig.json
         Returns: None
 
@@ -182,6 +209,12 @@ class ChatChain:
             self.execute_step(phase_item)
 
     def get_logfilepath(self):
+        """
+        Determine and return the log file path based on the current configuration.
+
+        Returns:
+            A tuple containing the start time and the log file path.
+        """
         """
         get the log path (under the software path)
         Returns:
@@ -202,6 +235,9 @@ class ChatChain:
         return start_time, log_filepath
 
     def pre_processing(self):
+        """
+        Perform pre-processing tasks such as removing useless files and logging global configuration settings.
+        """
         """
         remove useless files and log some global config settings
         Returns: None
@@ -265,6 +301,9 @@ class ChatChain:
 
     def post_processing(self):
         """
+        Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
+        """
+        """
         summarize the production and move log files to the software directory
         Returns: None
 
@@ -314,6 +353,15 @@ class ChatChain:
 
     # @staticmethod
     def self_task_improve(self, task_prompt):
+        """
+        Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
+
+        Args:
+            task_prompt: The original user query prompt.
+
+        Returns:
+            The revised task prompt as improved by the prompt engineer agent.
+        """
         """
         ask agent to improve the user query prompt
         Args:
