@@ -18,6 +18,14 @@ from chatdev.utils import log_and_print_online
 
 
 class ChatEnvConfig:
+    """Represents the configuration settings for the chat environment.
+
+    Attributes:
+        clear_structure (bool): Indicates whether to clear the directory structure.
+        brainstorming (bool): Indicates whether brainstorming is enabled.
+        gui_design (bool): Indicates whether GUI design is enabled.
+        git_management (bool): Indicates whether git management is enabled.
+    """
     def __init__(self, clear_structure, brainstorming, gui_design, git_management):
         self.clear_structure = clear_structure
         self.brainstorming = brainstorming
@@ -32,6 +40,18 @@ class ChatEnvConfig:
 
 
 class ChatEnv:
+    """Manages the chat environment, including configurations, codes, documents, and images.
+
+    Attributes:
+        config (ChatEnvConfig): Configuration settings for the chat environment.
+        roster (Roster): Manages the roster of agents.
+        codes (Codes): Manages the code documents.
+        proposed_images (Dict[str, str]): Stores proposed images with their descriptions.
+        incorporated_images (Dict[str, str]): Stores incorporated images with their descriptions.
+        requirements (Documents): Manages the requirements documents.
+        manuals (Documents): Manages the manuals documents.
+        env_dict (dict): Stores various environment-related information.
+    """
     def __init__(self, chat_env_config: ChatEnvConfig):
         self.config = chat_env_config
         self.roster: Roster = Roster()
@@ -53,6 +73,11 @@ class ChatEnv:
 
     @staticmethod
     def fix_module_not_found_error(test_reports):
+        """Attempts to fix a ModuleNotFoundError by installing the missing module.
+
+        Args:
+            test_reports (str): The output from test reports potentially containing error messages.
+        """
         if "ModuleNotFoundError" in test_reports:
             for match in re.finditer(
                 r"No module named '(\S+)'", test_reports, re.DOTALL
@@ -64,6 +89,11 @@ class ChatEnv:
                 )
 
     def set_directory(self, directory):
+        """Sets the working directory for the chat environment and manages directory structure.
+
+        Args:
+            directory (str): The path to the working directory.
+        """
         assert len(self.env_dict["directory"]) == 0
         self.env_dict["directory"] = directory
         self.codes.directory = directory
@@ -88,6 +118,11 @@ class ChatEnv:
                 os.mkdir(self.env_dict["directory"])
 
     def exist_bugs(self) -> tuple[bool, str]:
+        """Checks if there are any bugs in the software by running it.
+
+        Returns:
+            tuple[bool, str]: A tuple containing a boolean indicating the presence of bugs and a string with error messages or success information.
+        """
         directory = self.env_dict["directory"]
 
         success_info = "The software run successfully without errors."
@@ -123,44 +158,97 @@ class ChatEnv:
         return False, success_info
 
     def recruit(self, agent_name: str):
+        """Recruits a new agent into the roster.
+
+        Args:
+            agent_name (str): The name of the agent to recruit.
+        """
         self.roster._recruit(agent_name)
 
     def exist_employee(self, agent_name: str) -> bool:
+        """Checks if an agent exists in the roster.
+
+        Args:
+            agent_name (str): The name of the agent to check.
+
+        Returns:
+            bool: True if the agent exists, False otherwise.
+        """
         return self.roster._exist_employee(agent_name)
 
     def print_employees(self):
+        """Prints the list of recruited agents.
+        """
         self.roster._print_employees()
 
     def update_codes(self, generated_content):
+        """Updates the codes with generated content.
+
+        Args:
+            generated_content (str): The content to update the codes with.
+        """
         self.codes._update_codes(generated_content)
 
     def rewrite_codes(self) -> None:
+        """Rewrites the codes based on the current configuration for git management.
+        """
         self.codes._rewrite_codes(self.config.git_management)
 
     def get_codes(self) -> str:
+        """Retrieves the current codes.
+
+        Returns:
+            str: The current codes as a string.
+        """
         return self.codes._get_codes()
 
     def _load_from_hardware(self, directory) -> None:
+        """Loads codes from hardware based on the specified directory.
+
+        Args:
+            directory (str): The directory from which to load the codes.
+        """
         self.codes._load_from_hardware(directory)
 
     def _update_requirements(self, generated_content):
+        """Updates the requirements documents with generated content.
+
+        Args:
+            generated_content (str): The content to update the requirements with.
+        """
         self.requirements._update_docs(generated_content)
 
     def rewrite_requirements(self):
+        """Rewrites the requirements documents.
+        """
         self.requirements._rewrite_docs()
 
     def get_requirements(self) -> str:
+        """Retrieves the current requirements documents.
+
+        Returns:
+            str: The current requirements documents as a string.
+        """
         return self.requirements._get_docs()
 
     def _update_manuals(self, generated_content):
+        """Updates the manuals documents with generated content.
+
+        Args:
+            generated_content (str): The content to update the manuals with.
+        """
         self.manuals._update_docs(
             generated_content, parse=False, predifined_filename="manual.md"
         )
 
     def rewrite_manuals(self):
+        """Rewrites the manuals documents.
+        """
         self.manuals._rewrite_docs()
 
     def write_meta(self) -> None:
+        """Writes metadata information to a file.
+        """
         directory = self.env_dict["directory"]
 
         if not os.path.exists(directory):
@@ -191,6 +279,8 @@ class ChatEnv:
         print(os.path.join(directory, meta_filename), "Wrote")
 
     def generate_images_from_codes(self):
+        """Generates images from codes by downloading them based on URLs found in the codes.
+        """
         def download(img_url, file_name):
             r = requests.get(img_url)
             filepath = os.path.join(self.env_dict["directory"], file_name)
@@ -222,6 +312,14 @@ class ChatEnv:
                 download(image_url, filename)
 
     def get_proposed_images_from_message(self, messages):
+        """Extracts proposed images from messages and downloads them.
+
+        Args:
+            messages (str): The messages containing image information.
+
+        Returns:
+            dict: A dictionary of filenames and their descriptions.
+        """
         def download(img_url, file_name):
             r = requests.get(img_url)
             filepath = os.path.join(self.env_dict["directory"], file_name)

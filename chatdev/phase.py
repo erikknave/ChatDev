@@ -12,6 +12,10 @@ from chatdev.utils import log_and_print_online, log_arguments
 
 
 class Phase(ABC):
+    """
+    Abstract base class for different phases of the chat development process.
+    Each phase represents a distinct stage in the chat development lifecycle, encapsulating specific tasks, prompts, and roles.
+    """
 
     def __init__(
         self,
@@ -23,6 +27,18 @@ class Phase(ABC):
         model_type,
         log_filepath,
     ):
+        """
+        Initializes a new instance of the Phase class.
+
+        Args:
+            assistant_role_name (str): The role name of the assistant in the phase.
+            user_role_name (str): The role name of the user initiating the chat in the phase.
+            phase_prompt (str): The initial prompt for the phase.
+            role_prompts (dict): A dictionary containing prompts for all roles involved in the phase.
+            phase_name (str): The name of the phase.
+            model_type (ModelType): The type of model used in the phase.
+            log_filepath (str): The file path for logging chat interactions.
+        """
         """
 
         Args:
@@ -68,6 +84,28 @@ class Phase(ABC):
         placeholders=None,
         chat_turn_limit=10,
     ) -> str:
+        """
+        Conducts the chatting process for the current phase.
+
+        Args:
+            chat_env (ChatEnv): The global chat environment.
+            task_prompt (str): The user query prompt for building the software.
+            assistant_role_name (str): The role name of the assistant in the chat.
+            user_role_name (str): The role name of the user initiating the chat.
+            phase_prompt (str): The initial prompt for the phase.
+            phase_name (str): The name of the phase.
+            assistant_role_prompt (str): The prompt for the assistant role.
+            user_role_prompt (str): The prompt for the user role.
+            task_type (TaskType): The type of task being performed.
+            need_reflect (bool): Indicates whether reflection is needed.
+            with_task_specify (bool): Specifies whether the task is detailed.
+            model_type (ModelType): The type of model used in the phase.
+            placeholders (dict, optional): Placeholders for the phase environment to generate the phase prompt.
+            chat_turn_limit (int): The maximum number of turns in each chat.
+
+        Returns:
+            str: The conclusion of the seminar or chat.
+        """
         """
 
         Args:
@@ -225,6 +263,18 @@ class Phase(ABC):
         chat_env: ChatEnv,
     ) -> str:
         """
+        Conducts self-reflection for the current phase based on the chat history.
+
+        Args:
+            task_prompt (str): The user query prompt for building the software.
+            role_play_session (RolePlaying): The role play session from the chat phase which needs reflection.
+            phase_name (str): The name of the chat phase which needs reflection.
+            chat_env (ChatEnv): The global chat environment.
+
+        Returns:
+            str: The reflected content or conclusion.
+        """
+        """
 
         Args:
             task_prompt: user query prompt for building the software
@@ -288,6 +338,17 @@ class Phase(ABC):
     @abstractmethod
     def update_phase_env(self, chat_env):
         """
+        Updates the phase environment using the global chat environment.
+
+        This method must be implemented in subclasses to customize the phase environment based on the global chat environment.
+
+        Args:
+            chat_env (ChatEnv): The global chat environment.
+
+        Returns:
+            None
+        """
+        """
         update self.phase_env (if needed) using chat_env, then the chatting will use self.phase_env to follow the context and fill placeholders in phase prompt
         must be implemented in customized phase
         the usual format is just like:
@@ -305,6 +366,17 @@ class Phase(ABC):
     @abstractmethod
     def update_chat_env(self, chat_env) -> ChatEnv:
         """
+        Updates the global chat environment based on the results of the phase execution.
+
+        This method must be implemented in subclasses to customize the global chat environment based on the phase's conclusion.
+
+        Args:
+            chat_env (ChatEnv): The global chat environment.
+
+        Returns:
+            ChatEnv: The updated global chat environment.
+        """
+        """
         update chan_env based on the results of self.execute, which is self.seminar_conclusion
         must be implemented in customized phase
         the usual format is just like:
@@ -321,6 +393,19 @@ class Phase(ABC):
         pass
 
     def execute(self, chat_env, chat_turn_limit, need_reflect) -> ChatEnv:
+        """
+        Executes the chatting process for the current phase.
+
+        This method orchestrates the phase execution by updating the phase environment, conducting the chat, and then updating the global chat environment based on the chat's conclusion.
+
+        Args:
+            chat_env (ChatEnv): The global chat environment.
+            chat_turn_limit (int): The maximum number of turns in each chat.
+            need_reflect (bool): Indicates whether reflection is needed.
+
+        Returns:
+            ChatEnv: The updated global chat environment after the phase execution.
+        """
         """
         execute the chatting in this phase
         1. receive information from environment: update the phase environment from global environment
