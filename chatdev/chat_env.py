@@ -16,6 +16,8 @@ from chatdev.documents import Documents
 from chatdev.roster import Roster
 from chatdev.utils import log_and_print_online
 
+# This block imports necessary modules and packages for the chat environment. It includes standard libraries, third-party libraries (openai, requests), and modules from the chatdev package.
+
 
 """
 A configuration class for Chat Environment settings.
@@ -57,6 +59,12 @@ Attributes:
 """
 class ChatEnv:
     def __init__(self, chat_env_config: ChatEnvConfig):
+        """
+        Initializes the main chat environment with its configurations and components.
+
+        Args:
+            chat_env_config (ChatEnvConfig): Configuration settings for the chat environment.
+        """
         self.config = chat_env_config
         self.roster: Roster = Roster()
         self.codes: Codes = Codes()
