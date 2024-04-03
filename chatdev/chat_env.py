@@ -380,3 +380,46 @@ class ChatEnv:
                 download(image_url, filename)
 
         return images
+
+import unittest
+
+
+class TestChatEnvConfig(unittest.TestCase):
+    def test_init(self):
+        config = ChatEnvConfig(True, False, True, False)
+        self.assertTrue(config.clear_structure)
+        self.assertFalse(config.brainstorming)
+        self.assertTrue(config.gui_design)
+        self.assertFalse(config.git_management)
+
+    def test_str(self):
+        config = ChatEnvConfig(False, True, False, True)
+        self.assertIn('ChatEnvConfig.clear_structure: False', str(config))
+        self.assertIn('ChatEnvConfig.brainstorming: True', str(config))
+
+
+class TestChatEnv(unittest.TestCase):
+    def setUp(self):
+        self.config = ChatEnvConfig(False, False, False, False)
+        self.chat_env = ChatEnv(self.config)
+
+    def test_set_directory(self):
+        with self.assertRaises(AssertionError):
+            self.chat_env.set_directory('')
+
+    def test_exist_bugs(self):
+        self.chat_env.set_directory('/tmp')
+        exists, message = self.chat_env.exist_bugs()
+        self.assertIsInstance(exists, bool)
+        self.assertIsInstance(message, str)
+
+    def test_recruit(self):
+        self.chat_env.recruit('Agent007')
+        self.assertTrue(self.chat_env.exist_employee('Agent007'))
+
+    def test_print_employees(self):
+        self.chat_env.recruit('Agent008')
+        self.chat_env.print_employees()
+
+if __name__ == '__main__':
+    unittest.main()

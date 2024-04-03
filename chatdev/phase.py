@@ -839,3 +839,40 @@ class Manual(Phase):
         chat_env._update_manuals(self.seminar_conclusion)
         chat_env.rewrite_manuals()
         return chat_env
+
+import unittest
+
+
+class TestPhaseMethods(unittest.TestCase):
+
+    def test_chatting(self):
+        # Assuming existence of a Phase instance named phase_instance
+        # and a ChatEnv instance named chat_env
+        result = phase_instance.chatting(
+            chat_env=chat_env,
+            task_prompt='Build a chat application',
+            assistant_role_name='Developer',
+            user_role_name='Product Manager',
+            phase_prompt='Initial Phase',
+            phase_name='Development',
+            assistant_role_prompt='How can I assist you?',
+            user_role_prompt='I need a chat application.',
+            chat_turn_limit=5
+        )
+        self.assertIsInstance(result, str, 'The result should be a string')
+        self.assertTrue(len(result) > 0, 'The result should not be empty')
+
+    def test_self_reflection(self):
+        # Assuming existence of a Phase instance named phase_instance
+        # and a ChatEnv instance named chat_env
+        result = phase_instance.self_reflection(
+            task_prompt='Reflect on the chat application development',
+            role_play_session=None,  # This would be an instance of RolePlaying
+            phase_name='Reflection',
+            chat_env=chat_env
+        )
+        self.assertIsInstance(result, str, 'The result should be a string')
+        self.assertTrue(len(result) > 0, 'The result should not be empty')
+
+if __name__ == '__main__':
+    unittest.main()

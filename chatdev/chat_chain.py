@@ -410,3 +410,22 @@ then you should return a message in a format like \"<INFO> revised_version_of_th
             )
         )
         return revised_task_prompt
+
+import unittest
+
+
+class TestChatChain(unittest.TestCase):
+
+    def test_check_bool(self):
+        self.assertTrue(ChatChain.check_bool('true'))
+        self.assertFalse(ChatChain.check_bool('false'))
+
+    def test_self_task_improve(self):
+        chat_chain = ChatChain(task_prompt='Create a chat application')
+        improved_prompt = chat_chain.self_task_improve('Create a chat application')
+        self.assertIsInstance(improved_prompt, str)
+        self.assertTrue(len(improved_prompt) > 0)
+
+
+if __name__ == '__main__':
+    unittest.main()
