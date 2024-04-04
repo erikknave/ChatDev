@@ -1,5 +1,8 @@
 # Document this file
 
+# Import necessary libraries and modules for managing the chat environment.
+# This includes operations for file handling, subprocess management, and network requests,
+# as well as specific imports for handling codes, documents, roster, and logging utilities.
 import os
 import re
 import shutil
@@ -56,7 +59,22 @@ Attributes:
     env_dict (dict): Dictionary containing environment variables.
 """
 class ChatEnv:
+    """
+    Main class for managing the chat environment.
+
+    This class is responsible for setting up and managing the chat environment, including
+    managing codes, documents, images, and executing commands. It holds references to
+    various components such as the configuration settings, roster of agents, code snippets,
+    proposed and incorporated images, requirement and manual documents, and a dictionary
+    of environment variables.
+    """
     def __init__(self, chat_env_config: ChatEnvConfig):
+        """
+        Initializes the ChatEnv with the provided configuration.
+
+        Args:
+            chat_env_config (ChatEnvConfig): The configuration settings for the chat environment.
+        """
         self.config = chat_env_config
         self.roster: Roster = Roster()
         self.codes: Codes = Codes()
