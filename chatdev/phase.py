@@ -16,6 +16,11 @@ Base class for different phases of the chat development process.
 
 This abstract base class defines the structure and required methods for each phase in the chat development lifecycle.
 """
+"""
+Base class for different phases of the chat development process.
+
+This abstract base class defines the structure and required methods for each phase in the chat development lifecycle, aiming to streamline the process from initial chat setup to finalizing chat outcomes.
+"""
 class Phase(ABC):
 
     def __init__(
@@ -28,6 +33,11 @@ class Phase(ABC):
         model_type,
         log_filepath,
     ):
+        """
+        Initializes a new instance of the Phase class, setting up the essential attributes required for the chat phase to function.
+
+        This includes role names, prompts, phase name, model type, and logging paths, which are crucial for guiding the chat flow and storing chat logs.
+        """
         """
         Initializes a new instance of the Phase class.
 
@@ -85,6 +95,11 @@ class Phase(ABC):
         placeholders=None,
         chat_turn_limit=10,
     ) -> str:
+        """
+        Conducts the chatting process for the current phase, orchestrating the interaction between user and assistant roles based on the provided prompts and settings.
+
+        This method manages the chat flow, including initializing the chat, handling chat turns, and concluding the chat based on the dialogue outcomes and specified conditions.
+        """
         """
         Conducts the chatting process for the current phase.
 
@@ -264,6 +279,11 @@ class Phase(ABC):
         chat_env: ChatEnv,
     ) -> str:
         """
+        Performs self-reflection based on the chat session, generating a conclusion or summary that reflects the outcomes of the chat.
+
+        This method is crucial for phases that require an analysis or summary of the chat interactions, providing insights or decisions based on the chat content.
+        """
+        """
         Performs self-reflection based on the chat session.
 
         Args:
@@ -339,6 +359,11 @@ class Phase(ABC):
     @abstractmethod
     def update_phase_env(self, chat_env):
         """
+        Updates the phase environment using the global chat environment, preparing the phase-specific settings based on the overall chat context.
+
+        This method allows for dynamic adjustment of the phase environment, ensuring that each phase is tailored to the current state of the chat development process.
+        """
+        """
         Updates the phase environment using the global chat environment.
 
         This method should be implemented in subclasses to update the phase-specific environment based on the global chat environment.
@@ -367,6 +392,11 @@ class Phase(ABC):
     @abstractmethod
     def update_chat_env(self, chat_env) -> ChatEnv:
         """
+        Updates the global chat environment based on the results of the phase execution, applying the outcomes of the current phase to the overall chat development context.
+
+        This method is essential for passing key information and decisions between phases, ensuring continuity and coherence in the chat development lifecycle.
+        """
+        """
         Updates the global chat environment based on the results of the phase execution.
 
         This method should be implemented in subclasses to update the global chat environment using the conclusions or outcomes of the current phase.
@@ -394,6 +424,11 @@ class Phase(ABC):
         pass
 
     def execute(self, chat_env, chat_turn_limit, need_reflect) -> ChatEnv:
+        """
+        Executes the chatting process for the current phase, encompassing the setup, execution, and conclusion stages of the chat interaction.
+
+        This method orchestrates the entire phase process, from updating the phase environment to conducting the chat and updating the global chat environment based on the chat outcomes.
+        """
         """
         Executes the chatting process for the current phase.
 
