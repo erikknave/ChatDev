@@ -1,4 +1,4 @@
-# Update documentation here
+# This module defines the ChatChain class which orchestrates the execution of chat-based software development phases.
 
 import importlib
 import json
@@ -17,10 +17,22 @@ from chatdev.utils import log_and_print_online, now
 
 
 def check_bool(s):
+    """Convert a string to a boolean value. True if string is 'true', False otherwise.
+
+    Args:
+        s (str): The string to convert.
+
+    Returns:
+        bool: The boolean value of the string.
+    """
     return s.lower() == "true"
 
 
 class ChatChain:
+    """A class to manage and execute a chain of chat-based development phases.
+
+    This class initializes with configurations for the chat environment, roles, and tasks, and provides methods to execute the development process.
+    """
 
     def __init__(
         self,
@@ -32,6 +44,17 @@ class ChatChain:
         org_name: str = None,
         model_type: ModelType = ModelType.GPT_3_5_TURBO,
     ) -> None:
+        """Initialize a ChatChain instance with configurations and task details.
+
+        Args:
+            config_path: Path to the ChatChainConfig.json.
+            config_phase_path: Path to the PhaseConfig.json.
+            config_role_path: Path to the RoleConfig.json.
+            task_prompt: The user input prompt for the software.
+            project_name: The user input name for the software.
+            org_name: The organization name of the human user.
+            model_type: The model type to be used, default is ModelType.GPT_3_5_TURBO.
+        """
         """
         Initialize a ChatChain instance with configurations and task details.
 
@@ -124,6 +147,10 @@ class ChatChain:
             self.phases[phase] = phase_instance
 
     def make_recruitment(self):
+        """Recruit all employees as defined in the recruitments configuration.
+
+        This method iterates over the recruitment list and recruits each agent into the chat environment.
+        """
         """
         Recruit all employees as defined in the recruitments configuration.
         """
@@ -136,6 +163,14 @@ class ChatChain:
             self.chat_env.recruit(agent_name=employee)
 
     def execute_step(self, phase_item: dict):
+        """Execute a single phase in the chain as defined by the phase_item configuration.
+
+        Args:
+            phase_item: A dictionary containing the configuration for a single phase in the ChatChainConfig.json.
+
+        Raises:
+            RuntimeError: If the phase type is not implemented.
+        """
         """
         Execute a single phase in the chain as defined by the phase_item configuration.
 
@@ -197,6 +232,10 @@ class ChatChain:
             raise RuntimeError(f"PhaseType '{phase_type}' is not yet implemented.")
 
     def execute_chain(self):
+        """Execute the entire chain of phases based on the ChatChainConfig.json.
+
+        This method iterates over each phase item in the chain configuration and executes them in order.
+        """
         """
         Execute the entire chain of phases based on the ChatChainConfig.json.
         """
@@ -209,6 +248,11 @@ class ChatChain:
             self.execute_step(phase_item)
 
     def get_logfilepath(self):
+        """Determine and return the log file path based on the current configuration.
+
+        Returns:
+            A tuple containing the start time and the log file path.
+        """
         """
         Determine and return the log file path based on the current configuration.
 
@@ -235,6 +279,10 @@ class ChatChain:
         return start_time, log_filepath
 
     def pre_processing(self):
+        """Perform pre-processing tasks such as removing useless files and logging global configuration settings.
+
+        This method prepares the environment for the chat development process by cleaning up and setting up necessary configurations.
+        """
         """
         Perform pre-processing tasks such as removing useless files and logging global configuration settings.
         """
@@ -300,6 +348,10 @@ class ChatChain:
             self.chat_env.env_dict["task_prompt"] = self.task_prompt_raw
 
     def post_processing(self):
+        """Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
+
+        This method finalizes the chat development process by summarizing the work done and cleaning up the environment.
+        """
         """
         Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
         """
@@ -353,6 +405,14 @@ class ChatChain:
 
     # @staticmethod
     def self_task_improve(self, task_prompt):
+        """Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
+
+        Args:
+            task_prompt: The original user query prompt.
+
+        Returns:
+            The revised task prompt as improved by the prompt engineer agent.
+        """
         """
         Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
 
