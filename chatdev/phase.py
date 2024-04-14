@@ -14,7 +14,7 @@ from chatdev.utils import log_and_print_online, log_arguments
 """
 Base class for different phases of the chat development process.
 
-This abstract base class defines the structure and required methods for each phase in the chat development lifecycle.
+This abstract base class defines the structure and required methods for each phase in the chat development lifecycle. It serves as a template for creating specific phases of a chat development process, ensuring consistency and standardization across different phases.
 """
 class Phase(ABC):
 

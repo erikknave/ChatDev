@@ -1,4 +1,4 @@
-# Update documentation here
+# This module defines the ChatChain class which orchestrates the execution of chat-based software development tasks.
 
 import importlib
 import json
@@ -35,24 +35,16 @@ class ChatChain:
         """
         Initialize a ChatChain instance with configurations and task details.
 
-        Args:
-            config_path: Path to the ChatChainConfig.json.
-            config_phase_path: Path to the PhaseConfig.json.
-            config_role_path: Path to the RoleConfig.json.
-            task_prompt: The user input prompt for the software.
-            project_name: The user input name for the software.
-            org_name: The organization name of the human user.
-            model_type: The model type to be used, default is ModelType.GPT_3_5_TURBO.
-        """
-        """
+        This constructor loads configuration files, initializes chat environment settings, and prepares the software development phases.
 
         Args:
-            config_path: path to the ChatChainConfig.json
-            config_phase_path: path to the PhaseConfig.json
-            config_role_path: path to the RoleConfig.json
-            task_prompt: the user input prompt for software
-            project_name: the user input name for software
-            org_name: the organization name of the human user
+            config_path (str): Path to the ChatChainConfig.json.
+            config_phase_path (str): Path to the PhaseConfig.json.
+            config_role_path (str): Path to the RoleConfig.json.
+            task_prompt (str): The user input prompt for the software.
+            project_name (str): The user input name for the software.
+            org_name (str): The organization name of the human user.
+            model_type (ModelType): The model type to be used, default is ModelType.GPT_3_5_TURBO.
         """
 
         # load config file
@@ -126,11 +118,8 @@ class ChatChain:
     def make_recruitment(self):
         """
         Recruit all employees as defined in the recruitments configuration.
-        """
-        """
-        recruit all employees
-        Returns: None
 
+        This method iterates over the recruitment list and recruits each employee into the chat environment.
         """
         for employee in self.recruitments:
             self.chat_env.recruit(agent_name=employee)
@@ -139,19 +128,13 @@ class ChatChain:
         """
         Execute a single phase in the chain as defined by the phase_item configuration.
 
+        This method determines the type of phase (SimplePhase or ComposedPhase) and executes it accordingly. It handles the execution flow and error management for each phase.
+
         Args:
-            phase_item: A dictionary containing the configuration for a single phase in the ChatChainConfig.json.
+            phase_item (dict): A dictionary containing the configuration for a single phase in the ChatChainConfig.json.
 
         Raises:
             RuntimeError: If the phase type is not implemented.
-        """
-        """
-        execute single phase in the chain
-        Args:
-            phase_item: single phase configuration in the ChatChainConfig.json
-
-        Returns:
-
         """
 
         phase = phase_item["phase"]
@@ -199,11 +182,8 @@ class ChatChain:
     def execute_chain(self):
         """
         Execute the entire chain of phases based on the ChatChainConfig.json.
-        """
-        """
-        execute the whole chain based on ChatChainConfig.json
-        Returns: None
 
+        This method iterates through each phase item in the chain configuration and executes them in sequence, effectively driving the chat-based software development process.
         """
         for phase_item in self.chain:
             self.execute_step(phase_item)
@@ -212,15 +192,10 @@ class ChatChain:
         """
         Determine and return the log file path based on the current configuration.
 
-        Returns:
-            A tuple containing the start time and the log file path.
-        """
-        """
-        get the log path (under the software path)
-        Returns:
-            start_time: time for starting making the software
-            log_filepath: path to the log
+        This method calculates the log file path using the project name, organization name, and start time. It ensures that logs are stored in a structured and predictable manner.
 
+        Returns:
+            tuple: A tuple containing the start time and the log file path.
         """
         start_time = now()
         filepath = os.path.dirname(__file__)
@@ -237,11 +212,8 @@ class ChatChain:
     def pre_processing(self):
         """
         Perform pre-processing tasks such as removing useless files and logging global configuration settings.
-        """
-        """
-        remove useless files and log some global config settings
-        Returns: None
 
+        This method prepares the environment for the chat-based development process by cleaning up the workspace and setting up necessary configurations.
         """
         if self.chat_env.config.clear_structure:
             filepath = os.path.dirname(__file__)
@@ -302,11 +274,8 @@ class ChatChain:
     def post_processing(self):
         """
         Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
-        """
-        """
-        summarize the production and move log files to the software directory
-        Returns: None
 
+        This method finalizes the chat-based development process by summarizing the work done, cleaning up the environment, and organizing the output for review.
         """
 
         self.chat_env.write_meta()
@@ -356,20 +325,13 @@ class ChatChain:
         """
         Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
 
+        This method engages a prompt engineer agent to refine the user's initial task prompt, aiming to enhance clarity and detail for better understanding by the large language model.
+
         Args:
-            task_prompt: The original user query prompt.
+            task_prompt (str): The original user query prompt.
 
         Returns:
-            The revised task prompt as improved by the prompt engineer agent.
-        """
-        """
-        ask agent to improve the user query prompt
-        Args:
-            task_prompt: original user query prompt
-
-        Returns:
-            revised_task_prompt: revised prompt from the prompt engineer agent
-
+            str: The revised task prompt as improved by the prompt engineer agent.
         """
         self_task_improve_prompt = """I will give you a short description of a software design requirement, 
 please rewrite it into a detailed prompt that can make large language model know how to make this software better based this prompt,
