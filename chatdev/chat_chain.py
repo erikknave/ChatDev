@@ -124,6 +124,10 @@ class ChatChain:
             self.phases[phase] = phase_instance
 
     def make_recruitment(self):
+    """
+    Recruit all employees as defined in the recruitments configuration.
+    This method iterates over the recruitment list and recruits each agent by name.
+    """
         """
         Recruit all employees as defined in the recruitments configuration.
         """
@@ -136,6 +140,16 @@ class ChatChain:
             self.chat_env.recruit(agent_name=employee)
 
     def execute_step(self, phase_item: dict):
+    """
+    Execute a single phase in the chain as defined by the phase_item configuration.
+    This method handles both SimplePhase and ComposedPhase by checking the phase type and executing accordingly.
+
+    Args:
+        phase_item (dict): A dictionary containing the configuration for a single phase in the ChatChainConfig.json.
+
+    Raises:
+        RuntimeError: If the phase type is not implemented.
+    """
         """
         Execute a single phase in the chain as defined by the phase_item configuration.
 
@@ -197,6 +211,10 @@ class ChatChain:
             raise RuntimeError(f"PhaseType '{phase_type}' is not yet implemented.")
 
     def execute_chain(self):
+    """
+    Execute the entire chain of phases based on the ChatChainConfig.json.
+    Iterates through each phase item in the chain configuration and executes them in order.
+    """
         """
         Execute the entire chain of phases based on the ChatChainConfig.json.
         """
@@ -209,6 +227,13 @@ class ChatChain:
             self.execute_step(phase_item)
 
     def get_logfilepath(self):
+    """
+    Determine and return the log file path based on the current configuration.
+    This method constructs the log file path using the project name, organization name, and start time.
+
+    Returns:
+        tuple: A tuple containing the start time and the log file path.
+    """
         """
         Determine and return the log file path based on the current configuration.
 
@@ -235,6 +260,10 @@ class ChatChain:
         return start_time, log_filepath
 
     def pre_processing(self):
+    """
+    Perform pre-processing tasks such as removing useless files and logging global configuration settings.
+    This includes setting up the software directory, copying configuration files, and initializing the task prompt.
+    """
         """
         Perform pre-processing tasks such as removing useless files and logging global configuration settings.
         """
@@ -300,6 +329,10 @@ class ChatChain:
             self.chat_env.env_dict["task_prompt"] = self.task_prompt_raw
 
     def post_processing(self):
+    """
+    Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
+    This method also cleans up the directory by removing __pycache__ folders and logs the production summary.
+    """
         """
         Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
         """
@@ -353,6 +386,16 @@ class ChatChain:
 
     # @staticmethod
     def self_task_improve(self, task_prompt):
+    """
+    Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
+    This method uses a role-playing session with a prompt engineer agent to refine the user's task prompt.
+
+    Args:
+        task_prompt (str): The original user query prompt.
+
+    Returns:
+        str: The revised task prompt as improved by the prompt engineer agent.
+    """
         """
         Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
 
