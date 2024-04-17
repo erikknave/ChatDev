@@ -1,4 +1,4 @@
-# Update documentation here
+# This module defines the ChatChain class which orchestrates the execution of chat-based software development tasks.
 
 import importlib
 import json
@@ -44,16 +44,7 @@ class ChatChain:
             org_name: The organization name of the human user.
             model_type: The model type to be used, default is ModelType.GPT_3_5_TURBO.
         """
-        """
 
-        Args:
-            config_path: path to the ChatChainConfig.json
-            config_phase_path: path to the PhaseConfig.json
-            config_role_path: path to the RoleConfig.json
-            task_prompt: the user input prompt for software
-            project_name: the user input name for software
-            org_name: the organization name of the human user
-        """
 
         # load config file
         self.config_path = config_path
@@ -126,6 +117,8 @@ class ChatChain:
     def make_recruitment(self):
         """
         Recruit all employees as defined in the recruitments configuration.
+
+        This method iterates over the 'recruitments' list from the configuration and recruits each specified agent into the chat environment.
         """
         """
         recruit all employees
@@ -145,14 +138,7 @@ class ChatChain:
         Raises:
             RuntimeError: If the phase type is not implemented.
         """
-        """
-        execute single phase in the chain
-        Args:
-            phase_item: single phase configuration in the ChatChainConfig.json
 
-        Returns:
-
-        """
 
         phase = phase_item["phase"]
         phase_type = phase_item["phaseType"]
@@ -200,11 +186,7 @@ class ChatChain:
         """
         Execute the entire chain of phases based on the ChatChainConfig.json.
         """
-        """
-        execute the whole chain based on ChatChainConfig.json
-        Returns: None
 
-        """
         for phase_item in self.chain:
             self.execute_step(phase_item)
 
@@ -215,13 +197,7 @@ class ChatChain:
         Returns:
             A tuple containing the start time and the log file path.
         """
-        """
-        get the log path (under the software path)
-        Returns:
-            start_time: time for starting making the software
-            log_filepath: path to the log
 
-        """
         start_time = now()
         filepath = os.path.dirname(__file__)
         # root = "/".join(filepath.split("/")[:-1])
@@ -238,11 +214,7 @@ class ChatChain:
         """
         Perform pre-processing tasks such as removing useless files and logging global configuration settings.
         """
-        """
-        remove useless files and log some global config settings
-        Returns: None
 
-        """
         if self.chat_env.config.clear_structure:
             filepath = os.path.dirname(__file__)
             # root = "/".join(filepath.split("/")[:-1])
@@ -303,11 +275,7 @@ class ChatChain:
         """
         Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
         """
-        """
-        summarize the production and move log files to the software directory
-        Returns: None
 
-        """
 
         self.chat_env.write_meta()
         filepath = os.path.dirname(__file__)
@@ -363,13 +331,15 @@ class ChatChain:
             The revised task prompt as improved by the prompt engineer agent.
         """
         """
-        ask agent to improve the user query prompt
+        Improve the user query prompt by asking an agent to rewrite it into a more detailed and effective prompt.
+
+        This method utilizes a role-playing session with a 'Prompt Engineer' role to refine the user's initial task prompt into a version that is more understandable and actionable by the language model.
+
         Args:
-            task_prompt: original user query prompt
+            task_prompt: The original user query prompt.
 
         Returns:
-            revised_task_prompt: revised prompt from the prompt engineer agent
-
+            str: The revised task prompt as improved by the prompt engineer agent.
         """
         self_task_improve_prompt = """I will give you a short description of a software design requirement, 
 please rewrite it into a detailed prompt that can make large language model know how to make this software better based this prompt,
