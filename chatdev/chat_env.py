@@ -1,5 +1,10 @@
 # Document this file
 
+"""
+Imports necessary libraries and modules for the chat environment.
+
+This includes standard libraries for operating system interactions, regular expressions, file operations, subprocess management, and time tracking. Additionally, it imports third-party libraries for API requests and typing support. The internal modules for codes, documents, roster, and utility functions are also imported.
+"""
 import os
 import re
 import shutil
@@ -54,6 +59,11 @@ Attributes:
     requirements (Documents): Container for requirement documents.
     manuals (Documents): Container for manual documents.
     env_dict (dict): Dictionary containing environment variables.
+"""
+"""
+Main class for managing the chat environment.
+
+Initializes the chat environment with configurations, roster, codes, proposed and incorporated images, requirements, and manuals. It also maintains a dictionary for environment variables to manage the chat environment's state and settings.
 """
 class ChatEnv:
     def __init__(self, chat_env_config: ChatEnvConfig):
