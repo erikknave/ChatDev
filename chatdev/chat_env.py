@@ -57,6 +57,14 @@ Attributes:
 """
 class ChatEnv:
     def __init__(self, chat_env_config: ChatEnvConfig):
+        """
+        Initializes the Chat Environment with the specified configuration and default settings.
+
+        Args:
+            chat_env_config (ChatEnvConfig): Configuration settings for the chat environment.
+
+        Initializes containers for codes, proposed and incorporated images, requirements, and manuals. Also sets up an environment dictionary with default values.
+        """
         self.config = chat_env_config
         self.roster: Roster = Roster()
         self.codes: Codes = Codes()
