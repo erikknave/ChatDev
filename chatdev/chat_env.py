@@ -1,20 +1,8 @@
 # Document this file
 
-import os
-import re
-import shutil
-import signal
-import subprocess
-import time
-from typing import Dict
-
-import openai
-import requests
-
-from chatdev.codes import Codes
-from chatdev.documents import Documents
-from chatdev.roster import Roster
-from chatdev.utils import log_and_print_online
+# Import necessary libraries and modules for managing the chat environment.
+# This includes operations for file handling, subprocess management, and network requests,
+# as well as specific imports for handling codes, documents, roster, and logging utilities.
 
 
 """
@@ -57,6 +45,15 @@ Attributes:
 """
 class ChatEnv:
     def __init__(self, chat_env_config: ChatEnvConfig):
+        """
+        Initializes the main chat environment with its configuration and components.
+
+        Args:
+            chat_env_config (ChatEnvConfig): Configuration settings for the chat environment.
+
+        The initialization includes setting up containers for codes, documents, images, and
+        a dictionary for environment variables. It also prepares the roster of agents.
+        """
         self.config = chat_env_config
         self.roster: Roster = Roster()
         self.codes: Codes = Codes()
