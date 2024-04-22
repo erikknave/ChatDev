@@ -17,6 +17,15 @@ from chatdev.utils import log_and_print_online, now
 
 
 def check_bool(s):
+    """
+    Check if a string represents a boolean True value, case-insensitively.
+
+    Args:
+        s: A string to check.
+
+    Returns:
+        A boolean value indicating if the string is 'true' (case-insensitive).
+    """
     return s.lower() == "true"
 
 
@@ -124,6 +133,11 @@ class ChatChain:
             self.phases[phase] = phase_instance
 
     def make_recruitment(self):
+    """
+    Recruit all employees as defined in the recruitments configuration.
+
+    This method iterates over the 'recruitments' list in the configuration and recruits each agent by name.
+    """
         """
         Recruit all employees as defined in the recruitments configuration.
         """
@@ -136,6 +150,15 @@ class ChatChain:
             self.chat_env.recruit(agent_name=employee)
 
     def execute_step(self, phase_item: dict):
+    """
+    Execute a single phase in the chain as defined by the phase_item configuration.
+
+    This method determines the type of phase (SimplePhase or ComposedPhase) and executes it accordingly.
+    It raises a RuntimeError if the phase type is not recognized or implemented.
+
+    Args:
+        phase_item: A dictionary containing the configuration for a single phase in the ChatChainConfig.json.
+    """
         """
         Execute a single phase in the chain as defined by the phase_item configuration.
 
@@ -197,6 +220,11 @@ class ChatChain:
             raise RuntimeError(f"PhaseType '{phase_type}' is not yet implemented.")
 
     def execute_chain(self):
+    """
+    Execute the entire chain of phases based on the ChatChainConfig.json.
+
+    This method iterates over each phase item in the 'chain' list and executes them in order using the execute_step method.
+    """
         """
         Execute the entire chain of phases based on the ChatChainConfig.json.
         """
@@ -209,6 +237,14 @@ class ChatChain:
             self.execute_step(phase_item)
 
     def get_logfilepath(self):
+    """
+    Determine and return the log file path based on the current configuration.
+
+    This method constructs the log file path using the project name, organization name, and start time. It ensures the log is stored in a 'WareHouse' directory.
+
+    Returns:
+        A tuple containing the start time and the log file path.
+    """
         """
         Determine and return the log file path based on the current configuration.
 
@@ -235,6 +271,11 @@ class ChatChain:
         return start_time, log_filepath
 
     def pre_processing(self):
+    """
+    Perform pre-processing tasks such as removing useless files and logging global configuration settings.
+
+    This includes clearing the structure if specified, copying configuration files to the software path, and initializing the task prompt with or without self-improvement.
+    """
         """
         Perform pre-processing tasks such as removing useless files and logging global configuration settings.
         """
@@ -300,6 +341,11 @@ class ChatChain:
             self.chat_env.env_dict["task_prompt"] = self.task_prompt_raw
 
     def post_processing(self):
+    """
+    Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
+
+    This method summarizes the software production, calculates the duration, cleans up the directory if specified, and moves the log file to the 'WareHouse' directory.
+    """
         """
         Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
         """
@@ -353,6 +399,17 @@ class ChatChain:
 
     # @staticmethod
     def self_task_improve(self, task_prompt):
+    """
+    Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
+
+    This method uses a RolePlaying session to generate a more detailed task prompt based on the original. It ensures the revised prompt is concise and relevant for the large language model.
+
+    Args:
+        task_prompt: The original user query prompt.
+
+    Returns:
+        The revised task prompt as improved by the prompt engineer agent.
+    """
         """
         Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
 
