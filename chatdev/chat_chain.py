@@ -1,4 +1,4 @@
-# Update documentation here
+# This module defines the ChatChain class which orchestrates the execution of chat-based software development tasks.
 
 import importlib
 import json
@@ -17,10 +17,24 @@ from chatdev.utils import log_and_print_online, now
 
 
 def check_bool(s):
+    """
+    Check if a string represents a boolean True value.
+
+    Args:
+        s (str): The string to check.
+
+    Returns:
+        bool: True if the string is 'true' (case insensitive), otherwise False.
+    """
     return s.lower() == "true"
 
 
 class ChatChain:
+    """
+    The ChatChain class orchestrates the execution of different phases in a chat-based software development process.
+
+    It manages configurations, environment setup, phase execution, and logging.
+    """
 
     def __init__(
         self,
@@ -124,6 +138,11 @@ class ChatChain:
             self.phases[phase] = phase_instance
 
     def make_recruitment(self):
+    """
+    Recruits all employees as defined in the 'recruitments' configuration.
+
+    This method populates the chat environment with agents representing different roles.
+    """
         """
         Recruit all employees as defined in the recruitments configuration.
         """
@@ -136,6 +155,15 @@ class ChatChain:
             self.chat_env.recruit(agent_name=employee)
 
     def execute_step(self, phase_item: dict):
+    """
+    Executes a single phase in the chat development process as defined by the 'phase_item' configuration.
+
+    Args:
+        phase_item (dict): Configuration for a single phase, including type and specific settings.
+
+    Raises:
+        RuntimeError: If the phase type is not implemented, indicating a configuration error.
+    """
         """
         Execute a single phase in the chain as defined by the phase_item configuration.
 
@@ -197,6 +225,11 @@ class ChatChain:
             raise RuntimeError(f"PhaseType '{phase_type}' is not yet implemented.")
 
     def execute_chain(self):
+    """
+    Executes the entire chain of phases as defined in the ChatChain configuration.
+
+    This method sequentially processes each phase, managing the chat environment and task progression.
+    """
         """
         Execute the entire chain of phases based on the ChatChainConfig.json.
         """
@@ -209,6 +242,12 @@ class ChatChain:
             self.execute_step(phase_item)
 
     def get_logfilepath(self):
+    """
+    Determines and returns the log file path based on the current configuration and project details.
+
+    Returns:
+        tuple: Contains the start time and the log file path, facilitating logging and debugging.
+    """
         """
         Determine and return the log file path based on the current configuration.
 
@@ -235,6 +274,11 @@ class ChatChain:
         return start_time, log_filepath
 
     def pre_processing(self):
+    """
+    Performs pre-processing tasks such as cleaning up the workspace and initializing the chat environment.
+
+    This includes removing unnecessary files, setting up directories, and logging initial configurations.
+    """
         """
         Perform pre-processing tasks such as removing useless files and logging global configuration settings.
         """
@@ -300,6 +344,11 @@ class ChatChain:
             self.chat_env.env_dict["task_prompt"] = self.task_prompt_raw
 
     def post_processing(self):
+    """
+    Conducts post-processing tasks like summarizing the development process and cleaning up the environment.
+
+    This method also moves the log file to a designated directory, marking the end of the chat development session.
+    """
         """
         Perform post-processing tasks such as summarizing the production and moving log files to the software directory.
         """
@@ -353,6 +402,15 @@ class ChatChain:
 
     # @staticmethod
     def self_task_improve(self, task_prompt):
+    """
+    Improves the user's task prompt by utilizing a role-playing agent to rewrite it into a more detailed and actionable prompt.
+
+    Args:
+        task_prompt (str): The original user query prompt.
+
+    Returns:
+        str: The revised task prompt, enhanced for clarity and actionability by the prompt engineer agent.
+    """
         """
         Improve the user query prompt by asking an agent to rewrite it into a more detailed prompt.
 
